@@ -50,6 +50,22 @@ def notify_if_strong_fluctuations(data: pd.DataFrame, threshold: float) -> None:
         print("Порог колебаний цены НЕ превышен!")
 
 
+def export_data_to_csv(data: pd.DataFrame, filename: str) -> None:
+    """
+    Сохраняет данные об акциях в файл в формате CSV.
+
+    :param data: DataFrame с данными об акциях.
+    :param filename: Имя файла, куда будут сохранены данные.
+    :return: None. Данные сохраняются в указанный файл.
+    """
+    try:
+        # Сохраняем DataFrame в CSV файл
+        data.to_csv(filename, index=True)
+        print(f"Данные успешно сохранены в файл: {filename}")
+    except Exception as e:
+        print(f"Ошибка при сохранении данных в файл: {e}")
+
+
 def main():
     """
         Основная функция программы. Запрашивает ввод от пользователя, загружает данные,
@@ -88,6 +104,13 @@ def main():
 
     # Строим и сохраняем график
     dplt.create_and_save_plot(stock_data, ticker, period)
+
+    # Спрашиваем пользователя, хочет ли он экспортировать данные в CSV
+    export_choice = input("Хотите ли вы экспортировать данные в CSV? (да/нет): ").strip().lower()
+    if export_choice in ['да', 'yes', 'y']:
+        # Указываем имя файла
+        filename = f"{ticker}_{period}_stock_data.csv"
+        export_data_to_csv(stock_data, filename)
 
 
 
