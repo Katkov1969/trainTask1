@@ -91,8 +91,12 @@ calculate_atr для расчета ATR.
 - MACD с сигнальной линией,
 - ATR, показывающий волатильность актива.
 Графики имеют метки, легенды и сетку.
-
+  Пример работы. Запись в консоли:
 ![Запись в консоли](https://github.com/user-attachments/assets/597c6d4f-c2ed-4739-8162-e14c62efcbdc)
+
+График:
+![GOOGL](https://github.com/user-attachments/assets/e8e9e644-4f65-4930-ba82-6fabf3a10ba0)
+
 
 
 
