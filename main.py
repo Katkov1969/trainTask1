@@ -93,8 +93,11 @@ def main():
         print("Не удалось загрузить данные для указанного тикера и периода. Проверьте ввод.")
         return
 
-    # Добавляем скользящее среднее
+    # Добавляем скользящее среднее, RSI и MACD
     stock_data = dd.add_moving_average(stock_data)
+    stock_data = dd.calculate_rsi(stock_data)
+    stock_data = dd.calculate_macd(stock_data)
+    stock_data = dd.calculate_atr(stock_data)
 
     # Вычисляем и выводим среднюю цену закрытия
     calculate_and_display_average_price(stock_data)
@@ -102,7 +105,7 @@ def main():
     # Проверяем колебания цен
     notify_if_strong_fluctuations(stock_data, threshold)
 
-    # Строим и сохраняем график
+    # Строим график с индикаторами
     dplt.create_and_save_plot(stock_data, ticker, period)
 
     # Спрашиваем пользователя, хочет ли он экспортировать данные в CSV
