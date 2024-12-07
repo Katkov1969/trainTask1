@@ -2,18 +2,37 @@ import yfinance as yf
 import pandas as pd
 
 
+# def fetch_stock_data(ticker, period='1mo'):
+#     """
+#         Загружает данные об акциях для указанного тикера и периода.
+#
+#         :param ticker: Тикер акции.
+#         :param period: Период данных (например, '1mo', '6mo', '1y').
+#         :return: DataFrame с историческими данными акций.
+#     """
+#     stock = yf.Ticker(ticker)
+#     data = stock.history(period=period)
+#     return data
 
-def fetch_stock_data(ticker, period='1mo'):
+def fetch_stock_data(ticker, period='1mo', start_date=None, end_date=None):
     """
-        Загружает данные об акциях для указанного тикера и периода.
+    Загружает данные об акциях для указанного тикера, периода или диапазона дат.
 
-        :param ticker: Тикер акции.
-        :param period: Период данных (например, '1mo', '6mo', '1y').
-        :return: DataFrame с историческими данными акций.
+    :param ticker: Тикер акции.
+    :param period: Период данных (например, '1mo', '6mo', '1y'). Используется, если start_date и end_date не указаны.
+    :param start_date: Дата начала анализа (в формате YYYY-MM-DD).
+    :param end_date: Дата окончания анализа (в формате YYYY-MM-DD).
+    :return: DataFrame с историческими данными акций.
     """
     stock = yf.Ticker(ticker)
-    data = stock.history(period=period)
+
+    if start_date and end_date:
+        data = stock.history(start=start_date, end=end_date)
+    else:
+        data = stock.history(period=period)
+
     return data
+
 
 def add_moving_average(data, window_size=5):
     """

@@ -76,7 +76,17 @@ def main():
     print("Общие периоды времени для данных о запасах включают: 1д, 5д, 1мес, 3мес, 6мес, 1г, 2г, 5г, 10л, с начала года, макс.")
 
     ticker = input("Введите тикер акции (например, «AAPL» для Apple Inc)»: ")
-    period = input("Введите период для данных (например, '1mo' для одного месяца): ")
+
+    # Запрос периода или дат начала и окончания
+    use_dates = input("Вы хотите указать даты начала и окончания? (да/нет): ").strip().lower()
+    if use_dates in ['да', 'yes', 'y']:
+        start_date = input("Введите дату начала анализа (в формате YYYY-MM-DD): ")
+        end_date = input("Введите дату окончания анализа (в формате YYYY-MM-DD): ")
+        period = None           # Период будет игнорироваться
+    else:
+        period = input("Введите период для данных (например, '1mo' для одного месяца): ")
+        start_date = None
+        end_date = None
 
     # Запрашиваем порог колебаний
     try:
@@ -86,7 +96,7 @@ def main():
         return
 
     # Загружаем данные об акциях
-    stock_data = dd.fetch_stock_data(ticker, period)
+    stock_data = dd.fetch_stock_data(ticker, period=period, start_date=start_date, end_date=end_date)
 
     # Проверяем, получили ли мы данные
     if stock_data.empty:
@@ -106,16 +116,14 @@ def main():
     notify_if_strong_fluctuations(stock_data, threshold)
 
     # Строим график с индикаторами
-    dplt.create_and_save_plot(stock_data, ticker, period)
+    dplt.create_and_save_plot(stock_data, ticker, period or f"{start_date}_to_{end_date}")
 
     # Спрашиваем пользователя, хочет ли он экспортировать данные в CSV
     export_choice = input("Хотите ли вы экспортировать данные в CSV? (да/нет): ").strip().lower()
     if export_choice in ['да', 'yes', 'y']:
         # Указываем имя файла
-        filename = f"{ticker}_{period}_stock_data.csv"
+        filename = f"{ticker}_{period or (f'{start_date}_to_{end_date}')}_stock_data.csv"
         export_data_to_csv(stock_data, filename)
-
-
 
 if __name__ == "__main__":
     main()
