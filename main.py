@@ -116,7 +116,14 @@ def main():
     notify_if_strong_fluctuations(stock_data, threshold)
 
     # Строим график с индикаторами
-    dplt.create_and_save_plot(stock_data, ticker, period or f"{start_date}_to_{end_date}")
+
+    # Запрос стиля оформления графика
+    style = input("Введите стиль оформления графика (например, 'seaborn', 'ggplot', 'default'): ").strip()  # Изменение
+
+    # Создание и сохранение графика
+    dplt.create_and_save_plot(stock_data, ticker, period or f"{start_date}_to_{end_date}", style=style)  # Изменение
+
+    #dplt.create_and_save_plot(stock_data, ticker, period or f"{start_date}_to_{end_date}")
 
     # Спрашиваем пользователя, хочет ли он экспортировать данные в CSV
     export_choice = input("Хотите ли вы экспортировать данные в CSV? (да/нет): ").strip().lower()

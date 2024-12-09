@@ -2,16 +2,24 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-def create_and_save_plot(data, ticker, period, filename=None):
+def create_and_save_plot(data, ticker, period, filename=None, style="default"):
     """
-        Создаёт график с отображением цены закрытия, скользящего среднего, RSI и MACD.
+    Создаёт график с отображением цены закрытия, скользящего среднего, RSI и MACD.
 
-        :param data: DataFrame с данными об акциях.
-        :param ticker: Тикер акции.
-        :param period: Период данных.
-        :param filename: Имя файла для сохранения графика.
-        :return: None.
+    :param data: DataFrame с данными об акциях.
+    :param ticker: Тикер акции.
+    :param period: Период данных.
+    :param filename: Имя файла для сохранения графика.
+    :param style: Стиль оформления графика (например, 'seaborn', 'ggplot', 'default').
+    :return: None.
     """
+    # Применяем стиль графика
+    try:
+        plt.style.use(style)
+    except ValueError:
+        print(f"Предупреждение: Стиль '{style}' не найден. Используется стиль по умолчанию.")
+        plt.style.use("default")
+
     plt.figure(figsize=(12, 10))
     # График цен и скользящего среднего
     plt.subplot(4, 1, 1)
